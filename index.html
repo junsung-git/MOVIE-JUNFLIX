@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JUNFLIX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== INTRO ===================== -->
+  <div id="intro-screen">
+    <div id="intro-wrap">
+      <svg id="intro-logo" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="h-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff2a37"/>
+            <stop offset="100%" stop-color="#8b0000"/>
+          </linearGradient>
+          <filter id="h-glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Left bar -->
+        <rect id="bar-left"   x="5"  y="5"  width="28" height="130" rx="3" fill="url(#h-grad)"/>
+        <!-- Right bar -->
+        <rect id="bar-right"  x="87" y="5"  width="28" height="130" rx="3" fill="url(#h-grad)"/>
+        <!-- Crossbar -->
+        <rect id="bar-cross"  x="33" y="52" width="54" height="26"  rx="3" fill="url(#h-grad)"/>
+        <!-- Scanline sweep -->
+        <rect id="scanline" x="5" y="5" width="110" height="6" rx="2" fill="rgba(255,255,255,0.25)" opacity="0"/>
+      </svg>
+      <p id="intro-brand">JUNFLIX</p>
+    </div>
+  </div>
+
+  <!-- ===================== NAV ===================== -->
+  <nav id="navbar">
+    <div class="nav-left">
+      <span class="nav-logo">JUNFLIX</span>
+      <ul class="nav-links">
+        <li><a href="#">홈</a></li>
+        <li><a href="#">시리즈</a></li>
+        <li><a href="#">영화</a></li>
+        <li><a href="#">NEW! 요즘 대세</a></li>
+        <li><a href="#">내가 찜한 콘텐츠</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon-btn" id="search-btn" aria-label="검색">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <button class="nav-icon-btn" aria-label="알림">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </button>
+      <div class="nav-profile">
+        <div class="profile-avatar">J</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== SEARCH BAR ===================== -->
+  <div id="search-bar-wrap" class="hidden">
+    <input type="text" id="search-input" placeholder="제목, 장르, 배우를 검색해보세요..." />
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero">
+    <div id="hero-backdrop"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div id="hero-badge-adult"></div>
+      <h1 id="hero-title">영화를 불러오는 중...</h1>
+      <p id="hero-overview"></p>
+      <div class="hero-buttons">
+        <button class="btn-play" id="hero-play-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          재생
+        </button>
+        <button class="btn-info" id="hero-info-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          상세 정보
+        </button>
+      </div>
+    </div>
+    <div class="hero-rating-badge" id="hero-rating-badge"></div>
+  </section>
+
+  <!-- ===================== NOW PLAYING ROW ===================== -->
+  <section class="movie-section" id="now-playing-section">
+    <h2 class="section-title">지금 상영 중</h2>
+    <div class="slider-container">
+      <button class="slider-btn slider-btn-left" id="slide-left" aria-label="이전">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15,18 9,12 15,6"/></svg>
+      </button>
+      <div class="slider-track-wrap">
+        <div class="slider-track" id="movie-slider"></div>
+      </div>
+      <button class="slider-btn slider-btn-right" id="slide-right" aria-label="다음">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== TOP RATED ROW ===================== -->
+  <section class="movie-section" id="top-rated-section">
+    <h2 class="section-title">평점 높은 영화</h2>
+    <div class="slider-container">
+      <button class="slider-btn slider-btn-left" data-slider="top-rated" aria-label="이전">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15,18 9,12 15,6"/></svg>
+      </button>
+      <div class="slider-track-wrap">
+        <div class="slider-track" id="top-rated-slider"></div>
+      </div>
+      <button class="slider-btn slider-btn-right" data-slider="top-rated" aria-label="다음">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== MODAL ===================== -->
+  <div id="modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal">
+      <button id="modal-close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="modal-backdrop-wrap">
+        <img id="modal-backdrop" src="" alt="" />
+        <div class="modal-backdrop-overlay"></div>
+        <div class="modal-backdrop-info">
+          <h2 id="modal-title"></h2>
+          <div class="modal-meta-row">
+            <span id="modal-year"></span>
+            <span id="modal-runtime"></span>
+            <span id="modal-adult-badge"></span>
+          </div>
+          <div class="modal-btn-row">
+            <button class="btn-play btn-play-sm">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+              재생
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="modal-body">
+        <div class="modal-left">
+          <p id="modal-overview"></p>
+        </div>
+        <div class="modal-right">
+          <p><span class="modal-label">개봉일:</span> <span id="modal-release"></span></p>
+          <p><span class="modal-label">평점:</span> <span id="modal-rating"></span></p>
+          <p><span class="modal-label">장르:</span> <span id="modal-genres"></span></p>
+          <p><span class="modal-label">언어:</span> <span id="modal-lang"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer id="footer">
+    <p class="footer-logo">JUNFLIX</p>
+    <div class="footer-links">
+      <a href="#">회사 소개</a>
+      <a href="#">고객 센터</a>
+      <a href="#">개인정보처리방침</a>
+      <a href="#">쿠키 설정</a>
+    </div>
+    <p class="footer-copy">© 2026 JUNFLIX. Powered by TMDB</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
