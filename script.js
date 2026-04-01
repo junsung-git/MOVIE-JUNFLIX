@@ -17,12 +17,70 @@ const GENRE_MAP = {
   10770:'TV 영화', 53:'스릴러', 10752:'전쟁', 37:'서부'
 };
 
+/* ---------- TUDUM SOUND ---------- */
+function playTudum() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // --- 저음 베이스 히트 ---
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(80, ctx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.35);
+    gain1.gain.setValueAtTime(0, ctx.currentTime);
+    gain1.gain.linearRampToValueAtTime(1.2, ctx.currentTime + 0.01);
+    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.55);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + 0.6);
+
+    // --- 중음 보조 레이어 ---
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(160, ctx.currentTime);
+    osc2.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.3);
+    gain2.gain.setValueAtTime(0, ctx.currentTime);
+    gain2.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.01);
+    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(ctx.currentTime);
+    osc2.stop(ctx.currentTime + 0.45);
+
+    // --- 틱 어택 (임팩트 느낌) ---
+    const bufLen = ctx.sampleRate * 0.08;
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 8);
+    }
+    const noise = ctx.createBufferSource();
+    const noiseGain = ctx.createGain();
+    noise.buffer = buf;
+    noiseGain.gain.setValueAtTime(0.6, ctx.currentTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    noise.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noise.start(ctx.currentTime);
+
+  } catch (e) {
+    // 오디오 컨텍스트 미지원 환경 무시
+  }
+}
+
+
 /* ---------- INTRO ANIMATION ---------- */
 function runIntro() {
   document.body.style.overflow = 'hidden';
 
   const screen = document.getElementById('intro-screen');
   const logo   = document.getElementById('intro-logo');
+
+  // 두둥 사운드 (첫 번째 바 시작과 함께)
+  playTudum();
 
   // Phase 1: bars finish (~0.95s) → trigger glow pulse at 1.0s
   setTimeout(() => {
