@@ -67,6 +67,28 @@ img { display: block; }
   pointer-events: none;
 }
 
+#intro-click-hint {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 3px;
+  animation: hint-blink 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hint-blink {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.1; }
+}
+
+#intro-screen.started #intro-click-hint {
+  display: none;
+}
+
 #intro-wrap {
   display: flex;
   flex-direction: column;

@@ -79,24 +79,46 @@ function runIntro() {
   const screen = document.getElementById('intro-screen');
   const logo   = document.getElementById('intro-logo');
 
-  // 두둥 사운드 (첫 번째 바 시작과 함께)
-  playTudum();
+  // 클릭 대기 → 클릭하면 사운드 + 애니메이션 시작
+  screen.style.cursor = 'pointer';
 
-  // Phase 1: bars finish (~0.95s) → trigger glow pulse at 1.0s
-  setTimeout(() => {
-    logo.classList.add('glow');
-  }, 1000);
+  screen.addEventListener('click', function startOnClick() {
+    screen.removeEventListener('click', startOnClick);
+    screen.classList.add('started');
+    screen.style.cursor = 'default';
 
-  // Phase 2: fade out entire intro (at 2.2s)
-  setTimeout(() => {
-    screen.classList.add('fade-out');
-    document.body.style.overflow = '';
-  }, 2200);
+    // 두둥 사운드
+    playTudum();
 
-  // Phase 3: remove from DOM (at 2.8s)
-  setTimeout(() => {
-    screen.style.display = 'none';
-  }, 2800);
+    // H 바 애니메이션 재시작 (클릭 시점 기준)
+    logo.style.animation = 'none';
+    ['bar-left','bar-right','bar-cross','scanline'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.animation = 'none'; }
+    });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        logo.style.animation = '';
+        ['bar-left','bar-right','bar-cross','scanline'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.style.animation = ''; }
+        });
+
+        // Phase 1: glow pulse
+        setTimeout(() => { logo.classList.add('glow'); }, 1000);
+
+        // Phase 2: fade out
+        setTimeout(() => {
+          screen.classList.add('fade-out');
+          document.body.style.overflow = '';
+        }, 2200);
+
+        // Phase 3: remove DOM
+        setTimeout(() => { screen.style.display = 'none'; }, 2800);
+      });
+    });
+  }, { once: true });
 }
 
 
